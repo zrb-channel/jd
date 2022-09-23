@@ -10,6 +10,10 @@ import (
 )
 
 func Apply(ctx context.Context, conf *Config, req *CreateOrderRequest) (*CreateOrderResponse, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	
 	base := CreateBaseRequest(conf.AppId, "open_pushApplyData")
 
 	if err := base.Sign(conf, req); err != nil {
