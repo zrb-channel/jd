@@ -13,7 +13,7 @@ func Apply(ctx context.Context, conf *Config, req *CreateOrderRequest) (*CreateO
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
-	
+
 	base := CreateBaseRequest(conf.AppId, "open_pushApplyData")
 
 	if err := base.Sign(conf, req); err != nil {
@@ -24,7 +24,7 @@ func Apply(ctx context.Context, conf *Config, req *CreateOrderRequest) (*CreateO
 		Request(ctx).
 		SetHeader("Content-Type", "application/json").
 		SetBody(base).
-		Post(CreateOrderAddr)
+		Post(Addr)
 
 	if err != nil {
 		return nil, errors.New("提交失败")

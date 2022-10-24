@@ -2,6 +2,7 @@ package jd
 
 import (
 	json "github.com/json-iterator/go"
+	"github.com/shopspring/decimal"
 	"github.com/zrb-channel/jd/lib"
 )
 
@@ -65,4 +66,60 @@ type CreateOrderRequest struct {
 	Sign              string `json:"sign,omitempty" url:"-"`
 }
 
+type (
+	OrderItem struct {
+		OrderID string `json:"orderId" url:"orderId"`
+	}
+
+	Order struct {
+		OrderId         string `json:"orderId"`
+		BankApplyStatus string `json:"bankApplyStatus"`
+		CreditAmount    string `json:"creditAmount"`
+		AmountTime      string `json:"amountTime"`
+	}
+
+	CreditList []*OrderItem
+
+	QueryCreditRequest struct {
+		ProductId  string     `json:"productId" url:"productId"`
+		Sign       string     `json:"sign" url:"-"`
+		CreditList CreditList `json:"creditList" url:"creditList"`
+	}
+
+	QueryCreditResponse struct {
+		ProductId  string   `json:"productId"`
+		CreditList []*Order `json:"creditList"`
+	}
+
+	LoanOrder struct {
+		GetMoney         decimal.Decimal `json:"getMoney"`
+		GetMoneyTime     string          `json:"getMoneyTime"`
+		LoanBankOrderNum string          `json:"loanBankOrderNum"`
+		Term             string          `json:"term"`
+	}
+
+	OrderLoan struct {
+		OrderId string       `json:"orderId"`
+		List    []*LoanOrder `json:"list"`
+	}
+
+	QueryLoanResponse struct {
+		ProductId string       `json:"productId"`
+		LoanList  []*OrderLoan `json:"loanList"`
+	}
+
+	QueryResult struct {
+		Money        decimal.Decimal
+		MoneyTime    string
+		Status       int8
+		StatusText   string
+		CreditAmount decimal.Decimal
+		CreditTime   string
+	}
+)
+
 func (req *CreateOrderRequest) SetSign(v string) { req.Sign = v }
+
+func (req *QueryCreditRequest) SetSign(v string) {
+	req.Sign = v
+}
